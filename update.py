@@ -166,8 +166,8 @@ def get_latest_user_agents():
 
 @with_cli_status('Updating files on GitHub')
 def update_files_on_github(new_user_agents_json):
-    gh = Github(os.environ['GITHUB_TOKEN'])
-    repo = gh.get_repo(os.environ['GITHUB_REPOSITORY'])
+    gh = Github( secrets.GITHUB_TOKEN )
+    repo = gh.get_repo( secrets.GITHUB_REPOSITORY)
     for branch in ('main', 'gh-pages'):
         f = repo.get_contents(user_agents_file_name, ref=branch)
         repo.update_file(
