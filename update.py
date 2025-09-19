@@ -155,33 +155,12 @@ def generate_safari_user_agents():
     return user_agents
 
 
-@with_cli_status('Getting Edge user agents')
-def generate_edge_user_agents():
-    user_agents = []
-    response = requests_get(
-        'https://raw.githubusercontent.com/MicrosoftDocs/Edge-Enterprise/refs/heads/public'
-        '/edgeenterprise/microsoft-edge-relnote-stable-channel.md')
-    versions = set()
-    for line in response.text.splitlines():
-        match = re.match(
-            r'(?i)^#{2,} +version +([0-9]+)(\.[0-9]+)+ *: *[a-z]+ +[0-9]{1,2} *, *[0-9]{4}', line)
-        if match is None:
-            continue
-        versions.add(int(match[1]))
-    versions = sorted(versions)
-    version = versions[-1]
-    user_agents.append(
-        (f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
-            f'Chrome/{version}.0.0.0 Safari/537.36 Edg/{version}.0.0.0'))
-    return user_agents
-
 
 def get_latest_user_agents():
     user_agents = []
     user_agents.extend(generate_chrome_user_agents())
     user_agents.extend(generate_firefox_user_agents())
     user_agents.extend(generate_safari_user_agents())
-    user_agents.extend(generate_edge_user_agents())
     return user_agents
 
 
